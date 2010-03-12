@@ -39,6 +39,8 @@ int dodgeBTime;
 float dodgeAacc;
 float dodgeBacc;
 
+
+//draws a cube at position (x, y, z); front and top define the rotation of the cube and must be orthogonal to each other
 void cubeRotation(float x, float y, float z, float d, Vector front, Vector top)
 {
 	glBegin( GL_QUADS );
@@ -247,7 +249,7 @@ void gameDraw() {
 			float zmod = cos(deg2rad(18 * i)) * (11.0 - rfact);
 #ifdef CUBE_ROTATION
 			float ymod = -pow(2, rfact) * 0.1 - 1.0;
-			cubeRotation(xmod, ymod, zmod, 0.1, XVector, YVector);
+			cubeRotation(xmod, ymod, zmod, 0.1, /**/ MakeVector(xmod, 0, zmod)/* XVector */, YVector);
 			float xd = sin(deg2rad(18 * (i + 1))) * (11.0 - rfact) - xmod;
 			float zd = cos(deg2rad(18 * (i + 1))) * (11.0 - rfact) - zmod;
 			float xdd = sin(deg2rad(18 * i)) * (10.0 - rfact) - xmod;
@@ -294,7 +296,7 @@ void gameDraw() {
 		float xmod = sin( 2*(i+time/10.0)*(PI/180.0) ) * 10.3;
 		float zmod = cos( 2*(i+time/10.0)*(PI/180.0) ) * 10.3;
 #ifdef CUBE_ROTATION
-		cubeRotation(xmod, 0, zmod, 0.05, XVector, YVector);
+		cubeRotation(xmod, 0, zmod, 0.05, MakeVector(xmod, 0, zmod), YVector);
 #else
 		glTranslatef( xmod, 0.0, zmod );
 		cube( 0.05 );
@@ -310,6 +312,16 @@ void gameDraw() {
 	Vector rotDir = VectorNorm( VectorCross( YVector, movDir ) );
 	
 	// Player A.
+#ifdef CUBE_ROTATION
+	//how calculate the normal for the top face of the player cube?
+	// - calculate the cross of front and the y axis (make a vector in the xz plane)
+	// - calculate the cross of front and the xz plane vector
+	//looking for an easier way...
+	Vector cubeFront = VectorSub(posB, posA);
+	Vector cubeSide = VectorCross(cubeFront, YVector);
+	glColor4f( 0.0, 0.4, 1.0, 1.0 );
+	cubeRotation(posA.x, posA.y, posA.z, lifeA, cubeFront, VectorCross(cubeFront, cubeSide));
+#else
 	glPushMatrix();
 	glTranslatef( posA.x, posA.y, posA.z );
 	Vector b2 = VectorNorm( VectorSub( posA, posB ) );
@@ -320,8 +332,16 @@ void gameDraw() {
 	glColor4f( 0.0, 0.4, 1.0, 1.0 );
 	cube( lifeA );
 	glPopMatrix();
+#endif
 
 	// Player B.
+#ifdef CUBE_ROTATION
+	//same as above...
+	cubeFront = VectorSub(posA, posB);
+	cubeSide = VectorCross(cubeFront, YVector);
+	glColor4f( 1.0, 0.0, 0.4, 1.0 );
+	cubeRotation(posB.x, posB.y, posB.z, lifeB, cubeFront, VectorCross(cubeFront, cubeSide));
+#else
 	glPushMatrix();
 	glTranslatef( posB.x, posB.y, posB.z );
 	b2 = VectorNorm( VectorSub( posB, posA ) );
@@ -332,7 +352,8 @@ void gameDraw() {
 	glColor4f( 1.0, 0.0, 0.4, 1.0 );
 	cube( lifeB );
 	glPopMatrix();
-
+#endif
+	
 	// Circles.
 	glDisable( GL_LIGHTING );
 	glBegin( GL_LINES );
@@ -342,8 +363,8 @@ void gameDraw() {
 		float xe = sin( 0.5*(i+1)*(PI/180.0) ) * dist;
 		float ze = cos( 0.5*(i+1)*(PI/180.0) ) * dist;
 		if( (xs+posA.x)*(xs+posA.x)+(zs+posA.z)*(zs+posA.z) > 105.0 ||
-			(xe+posA.x)*(xe+posA.x)+(ze+posA.z)*(ze+posA.z) > 105.0
-		){
+			(xe+posA.x)*(xe+posA.x)+(ze+posA.z)*(ze+posA.z) > 105.0)
+		{
 			glColor4f( 0.2, 0.2, 0.2, 1.0 );
 		}
 		else {
@@ -352,8 +373,8 @@ void gameDraw() {
 		glVertex3f( xs + posA.x, 0, zs + posA.z );
 		glVertex3f( xe + posA.x, 0, ze + posA.z );
 		if( (xs+posB.x)*(xs+posB.x)+(zs+posB.z)*(zs+posB.z) > 105.0 ||
-			(xe+posB.x)*(xe+posB.x)+(ze+posB.z)*(ze+posB.z) > 105.0
-		){
+			(xe+posB.x)*(xe+posB.x)+(ze+posB.z)*(ze+posB.z) > 105.0)
+		{
 			glColor4f( 0.2, 0.2, 0.2, 1.0 );
 		}
 		else {
@@ -370,17 +391,25 @@ void gameDraw() {
 	glColor4f( 0.0, 0.4, 1.0, 1.0 );
 	for( int i = 0; i < 200; i++ ) {
 		if( shotAa[i] ) {
+#ifdef CUBE_ROTATION
+			cubeRotation(shotA[i].x, shotA[i].y, shotA[i].z, 0.1, shotAd[i], YVector);
+#else
 			glTranslatef( shotA[i].x, shotA[i].y, shotA[i].z );
 			cube(0.1);
 			glTranslatef( -shotA[i].x, -shotA[i].y, -shotA[i].z );
+#endif
 		}
 	}
 	glColor4f( 1.0, 0.0, 0.4, 1.0 );
 	for( int i = 0; i < 200; i++ ) {	
 		if( shotBa[i] ) {
+#ifdef CUBE_ROTATION
+			cubeRotation(shotB[i].x, shotB[i].y, shotB[i].z, 0.1, shotBd[i], YVector);
+#else
 			glTranslatef( shotB[i].x, shotB[i].y, shotB[i].z );
 			cube(0.1);
 			glTranslatef( -shotB[i].x, -shotB[i].y, -shotB[i].z );
+#endif
 		}
 	}
 #ifdef GAME_DEBUG
