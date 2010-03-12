@@ -405,17 +405,18 @@ int gameUpdate( int value ) {
 	}
 
 	// Shoot
+	Vector shotDir = VectorNorm( VectorSub( posA, posB ) );
 	if( key[ '-' ] && time - shotAtime > 2 ) {
 		shotAtime = time;
 		shotA[shotAind] = posA;
-		shotAd[shotAind] = VectorMul( movDir, -0.1 );
+		shotAd[shotAind] = VectorMul( shotDir, -0.1 );
 		shotAa[shotAind] = 1;
 		shotAind = (shotAind+1) % 200;
 	}
 	if( key[ 'f' ] && time - shotBtime > 2 ) {
 		shotBtime = time;
 		shotB[shotBind] = posB;
-		shotBd[shotBind] = VectorMul( movDir, 0.1 );
+		shotBd[shotBind] = VectorMul( shotDir, 0.1 );
 		shotBa[shotBind] = 1;
 		shotBind = (shotBind+1) % 200;
 	}
