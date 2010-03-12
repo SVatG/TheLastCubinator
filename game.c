@@ -339,18 +339,47 @@ int gameUpdate( int value ) {
 	// Dodge movement
 	posA.y = posAo.y;
 	posB.y = posBo.y;
-	if( key[ 'g' ] ) {
-		dodgeBacc = -0.075;
-	}
-	else {
-		if( key[ 'h' ] ) {
-			dodgeBacc = +0.075;
+	
+	if( time - dodgeBTime > 60 ) {
+		if( key[ 'g' ] ) {
+			dodgeBTime = time;
+			dodgeBacc = -0.15;
+		}
+		else {
+			if( key[ 'h' ] ) {
+				dodgeBTime = time;
+				dodgeBacc = +0.15;
+			}
 		}
 	}
-	dodgeBacc = (dodgeBacc + 0.01 * sgn(posB.y)) * 0.95;
-	posB.y = posB.y - dodgeBacc;
-	if( (posB.y >= -0.01) && (posB.y <= 0.01) ) {
+	if( time - dodgeBTime > 60 ) {
 		posB.y = 0;
+		dodgeBacc = 0;
+	}
+	else {
+		dodgeBacc = (dodgeBacc + 0.01 * sgn(posB.y)) * 0.93;
+		posB.y = posB.y - dodgeBacc;
+	}
+	
+	if( time - dodgeATime > 60 ) {
+		if( key[ ',' ] ) {
+			dodgeATime = time;
+			dodgeAacc = -0.15;
+		}
+		else {
+			if( key[ '.' ] ) {
+				dodgeATime = time;
+				dodgeAacc = +0.15;
+			}
+		}
+	}
+	if( time - dodgeATime > 60 ) {
+		posA.y = 0;
+		dodgeAacc = 0;
+	}
+	else {
+		dodgeAacc = (dodgeAacc + 0.01 * sgn(posA.y)) * 0.93;
+		posA.y = posA.y - dodgeAacc;
 	}
 	
 	// Check out-of-bounds.
