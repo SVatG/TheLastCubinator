@@ -9,19 +9,29 @@
 
 int time = 0;
 
+// Player A shooting
 Vector shotA[200];
 Vector shotAd[200];
 int shotAa[200];
 int shotAind;
 int shotAtime;
+
+// Player B shooting
 Vector shotB[200];
 Vector shotBd[200];
 int shotBa[200];
 int shotBind;
 int shotBtime;
 
+// Life counters
 float lifeA = 0.3;
 float lifeB = 0.3;
+
+// Dodging
+int dodgeATime;
+int dodgeBTime;
+float dodgeAacc;
+float dodgeBacc;
 
 void cube( float d ) {
 
@@ -330,14 +340,15 @@ int gameUpdate( int value ) {
 	posA.y = posAo.y;
 	posB.y = posBo.y;
 	if( key[ 'g' ] ) {
-		posB.y = 0.5;
+		dodgeBacc = -0.075;
 	}
 	else {
 		if( key[ 'h' ] ) {
-			posB.y = -0.5;
+			dodgeBacc = +0.075;
 		}
 	}
-	posB.y = posB.y - 0.01;
+	dodgeBacc = (dodgeBacc + 0.01 * sgn(posB.y)) * 0.95;
+	posB.y = posB.y - dodgeBacc;
 	if( (posB.y >= -0.01) && (posB.y <= 0.01) ) {
 		posB.y = 0;
 	}
