@@ -288,7 +288,7 @@ void gameDraw() {
 
 // Called every 10 ms
 // Returns 1 for "effect over"
-int gameUpdate( int value ) {
+int gameUpdate(void) {
 	time++;
 	
 	// Save some important values.

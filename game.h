@@ -3,7 +3,7 @@
 
 void gameInit(void);
 void gameDraw(void);
-int gameUpdate(int);
+int gameUpdate(void);
 void gameCleanup(void);
 
 #endif
