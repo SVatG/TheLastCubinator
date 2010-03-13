@@ -52,9 +52,8 @@ void drawScene() {
 void update(int value) {
 	if( gameUpdate() ) {
 		gameCleanup();
- 		exit( 1 );
- 	}
-
+		exit( 1 );
+	}
 	glutPostRedisplay();
 	glutTimerFunc( 10, update, 0 );
 }
@@ -102,7 +101,7 @@ int main(int argc, char** argv) {
 	initOGL( argc, argv );
 	initFunctions();
 
- 	gameInit();
+	gameInit();
 
 	glutMainLoop();
 

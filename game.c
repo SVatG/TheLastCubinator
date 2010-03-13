@@ -85,7 +85,7 @@ void cube( float d ) {
 Vector posA;
 Vector posB;
 
-void gameInit() {
+void gameInit(void) {
 	// General
 	glEnable( GL_DEPTH_TEST );
 	glClearDepth( 1.0f );
@@ -116,7 +116,7 @@ void gameInit() {
 	// Perspective
 	glMatrixMode( GL_PROJECTION );
 	glLoadIdentity();
- 	gluPerspective( 90.0, screenWidth / screenHeight, 1.0, 200.0 );
+	gluPerspective( 90.0, screenWidth / screenHeight, 1.0, 200.0 );
 
 	// Data
 	posA = MakeVector(  1.0, 0.0, 0.0 );
@@ -215,7 +215,7 @@ void gameDraw() {
 	Vector b3 = VectorNorm( ProjectVectorToPlane( rotDir, b2 ) );
 	Vector b1 = VectorNorm( VectorCross( b2, b3 ) );
 	Matrix rot = MakeMatrixFromVectors( b1, b2, b3, ZeroVector );
- 	MatrixGLMult( rot );
+	MatrixGLMult( rot );
 	glColor4f( 0.0, 0.4, 1.0, 1.0 );
 	cube( lifeA );
 	glPopMatrix();
@@ -227,7 +227,7 @@ void gameDraw() {
 	b3 = VectorNorm( ProjectVectorToPlane( rotDir, b2 ) );
 	b1 = VectorNorm( VectorCross( b2, b3 ) );
 	rot = MakeMatrixFromVectors( b1, b2, b3, ZeroVector );
- 	MatrixGLMult( rot );
+	MatrixGLMult( rot );
 	glColor4f( 1.0, 0.0, 0.4, 1.0 );
 	cube( lifeB );
 	glPopMatrix();
@@ -288,7 +288,7 @@ void gameDraw() {
 
 // Called every 10 ms
 // Returns 1 for "effect over"
-int gameUpdate( int value ) {
+int gameUpdate(void) {
 	time++;
 	
 	// Save some important values.
@@ -448,6 +448,6 @@ int gameUpdate( int value ) {
 }
 
 // Clean up what needs cleaning up.
-void gameCleanup() {
+void gameCleanup(void) {
 	// Nothing
 }
