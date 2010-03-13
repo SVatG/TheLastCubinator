@@ -8,7 +8,7 @@
 #include "Vector.h"
 
 //debug messages to shell
-#define GAME_DEBUG
+//#define GAME_DEBUG
 
 //enable cube rotation code
 #define CUBE_ROTATION
@@ -62,7 +62,6 @@ void cubeRotation(float x, float y, float z, float d, Vector front, Vector top)
 	Vector brb = VectorAdd(MakeVector(x, y, z), VectorMul(VectorAdd3(VectorNeg(front), right, VectorNeg(top)), d));
 	Vector blt = VectorAdd(MakeVector(x, y, z), VectorMul(VectorAdd3(VectorNeg(front), VectorNeg(right), top), d));
 	Vector blb = VectorAdd(MakeVector(x, y, z), VectorMul(VectorAdd3(VectorNeg(front), VectorNeg(right), VectorNeg(top)), d));
-	
 	
 	//Top
 	glNormal3f(top.x, top.y, top.z);
@@ -254,7 +253,7 @@ void gameDraw() {
 			float zd = cos(deg2rad(18 * (i + 1))) * (11.0 - rfact) - zmod;
 			float xdd = sin(deg2rad(18 * i)) * (10.0 - rfact) - xmod;
 			float zdd = cos(deg2rad(18 * i)) * (10.0 - rfact) - zmod;
-			glColor4f( 1.0, 0.4, 1.0, 1.0 );
+			glColor4f(1.0, 0.4, 1.0, 1.0);
 			glBegin( GL_LINES );
 				glVertex3f(xmod + xd, ymod, zmod + zd);
 				glVertex3f(xmod, ymod, zmod);
@@ -262,24 +261,20 @@ void gameDraw() {
 				glVertex3f(xmod, ymod, zmod);
 			glEnd();
 #else
-			glTranslatef( xmod, -pow(2,rfact)*0.1-1.0, zmod );
+			glTranslatef(xmod, -pow(2, rfact) * 0.1 - 1.0, zmod);
 			cube(0.1);
-			float xd = sin(deg2rad(18 * (i + 1))) *
-				(11.0 - rfact) - xmod;
-			float zd = cos(deg2rad(18 * (i + 1))) *
-				(11.0 - rfact) - zmod;
-			float xdd = sin(deg2rad(18 * i)) *
-				(10.0 - rfact) - xmod;
-			float zdd = cos(deg2rad(18 * i)) *
-				(10.0 - rfact) - zmod;
-			glColor4f( 1.0, 0.4, 1.0, 1.0 );
+			float xd = sin(deg2rad(18 * (i + 1))) * (11.0 - rfact) - xmod;
+			float zd = cos(deg2rad(18 * (i + 1))) * (11.0 - rfact) - zmod;
+			float xdd = sin(deg2rad(18 * i)) * (10.0 - rfact) - xmod;
+			float zdd = cos(deg2rad(18 * i)) * (10.0 - rfact) - zmod;
+			glColor4f(1.0, 0.4, 1.0, 1.0);
 			glBegin( GL_LINES );
-				glVertex3f( xd, 0, zd );
-				glVertex3f( 0, 0, 0 );
-				glVertex3f( xdd, -pow(2,rfact)*0.1, zdd );
-				glVertex3f( 0, 0, 0 );
+				glVertex3f(xd, 0, zd);
+				glVertex3f(0, 0, 0);
+				glVertex3f(xdd, -pow(2, rfact) * 0.1, zdd);
+				glVertex3f(0, 0, 0);
 			glEnd();
-			glTranslatef( -xmod, pow(2,rfact)*0.1+1.0, -zmod );
+			glTranslatef(-xmod, pow(2, rfact) * 0.1 + 1.0, -zmod);
 #endif
 		}
 	}
@@ -319,7 +314,7 @@ void gameDraw() {
 	//looking for an easier way...
 	Vector cubeFront = VectorSub(posB, posA);
 	Vector cubeSide = VectorCross(cubeFront, YVector);
-	glColor4f( 0.0, 0.4, 1.0, 1.0 );
+	glColor4f(0.0, 0.4, 1.0, 1.0);
 	cubeRotation(posA.x, posA.y, posA.z, lifeA, cubeFront, VectorCross(cubeFront, cubeSide));
 #else
 	glPushMatrix();
@@ -339,7 +334,7 @@ void gameDraw() {
 	//same as above...
 	cubeFront = VectorSub(posA, posB);
 	cubeSide = VectorCross(cubeFront, YVector);
-	glColor4f( 1.0, 0.0, 0.4, 1.0 );
+	glColor4f(1.0, 0.0, 0.4, 1.0);
 	cubeRotation(posB.x, posB.y, posB.z, lifeB, cubeFront, VectorCross(cubeFront, cubeSide));
 #else
 	glPushMatrix();
@@ -358,10 +353,10 @@ void gameDraw() {
 	glDisable( GL_LIGHTING );
 	glBegin( GL_LINES );
 	for( int i = 0; i < 720; i++ ) {
-		float xs = sin( 0.5*i*(PI/180.0) ) * dist;
-		float zs = cos( 0.5*i*(PI/180.0) ) * dist;
-		float xe = sin( 0.5*(i+1)*(PI/180.0) ) * dist;
-		float ze = cos( 0.5*(i+1)*(PI/180.0) ) * dist;
+		float xs = sin(deg2rad(0.5 * i)) * dist;
+		float zs = cos(deg2rad(0.5 * i)) * dist;
+		float xe = sin(deg2rad(0.5 * (i + 1))) * dist;
+		float ze = cos(deg2rad(0.5 * (i + 1))) * dist;
 		if( (xs+posA.x)*(xs+posA.x)+(zs+posA.z)*(zs+posA.z) > 105.0 ||
 			(xe+posA.x)*(xe+posA.x)+(ze+posA.z)*(ze+posA.z) > 105.0)
 		{
@@ -479,11 +474,9 @@ int gameUpdate(void) {
 			dodgeBTime = time;
 			dodgeBacc = -0.15;
 		}
-		else {
-			if( key[ 'h' ] ) {
-				dodgeBTime = time;
-				dodgeBacc = +0.15;
-			}
+		else if( key[ 'h' ] ) {
+			dodgeBTime = time;
+			dodgeBacc = +0.15;
 		}
 	}
 	if( time - dodgeBTime > 60 ) {
@@ -500,11 +493,9 @@ int gameUpdate(void) {
 			dodgeATime = time;
 			dodgeAacc = -0.15;
 		}
-		else {
-			if( key[ '.' ] ) {
-				dodgeATime = time;
-				dodgeAacc = +0.15;
-			}
+		else if( key[ '.' ] ) {
+			dodgeATime = time;
+			dodgeAacc = +0.15;
 		}
 	}
 	if( time - dodgeATime > 60 ) {
