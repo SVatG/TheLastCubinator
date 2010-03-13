@@ -283,7 +283,7 @@ void gameDraw() {
 		}
 	}
 
-	printf("Player A: %f, %f, %f --- Player B: %f, %f, %f\n", posA.x, posA.y, posA.z, posB.x, posB.y, posB.z);
+	// printf("Player A: %f, %f, %f --- Player B: %f, %f, %f\n", posA.x, posA.y, posA.z, posB.x, posB.y, posB.z);
 }
 
 // Called every 10 ms
@@ -301,7 +301,7 @@ int gameUpdate( int value ) {
 		VectorSub( posA, posB ), YVector ) );
 	movDir.y = 0.0;
 	
-	printf( "%f, %f, %f\n", movDir.x, movDir.y, movDir.z );
+	// printf( "%f, %f, %f\n", movDir.x, movDir.y, movDir.z );
 	Vector rotDir = VectorNorm( VectorCross( YVector, movDir ) );
 
 	// Rotational movement.
