@@ -75,10 +75,10 @@ void initOGL(int argc, char** argv) {
 	strcat( modeString, ":24" );
 	glutGameModeString( modeString );
 
-	// glutEnterGameMode();
+	glutEnterGameMode();
 
 	// Alternative: Windowed.
-	glutCreateWindow("Fages");
+	// glutCreateWindow("Fages");
 
 	glewInit();
 }
