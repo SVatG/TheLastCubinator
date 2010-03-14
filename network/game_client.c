@@ -178,10 +178,6 @@ void gameDraw()
 		cubeRotation(xmod, 0, zmod, 0.05, MakeVector(xmod, 0, zmod), YVector);
 	}
 	
-	// Player positions.
-	//Vector movDir = VectorNorm(VectorSub(p[0].pos, p[1].pos));
-	//Vector rotDir = VectorNorm(VectorCross(YVector, movDir));
-	
 	//how calculate the normal for the top face of the player cube?
 	// - calculate the cross of front and the y axis (make a vector in the xz plane)
 	// - calculate the cross of front and the xz plane vector
@@ -204,7 +200,21 @@ void gameDraw()
 		float xe = sin(deg2rad(0.5 * (i + 1))) * dist;
 		float ze = cos(deg2rad(0.5 * (i + 1))) * dist;
 		for(int j = 0; j < 2; j++)
-		{
+		{// B = j; A = !j
+			float yd = 2.0 - VectorDistance(MakeVector(xs + p[j].pos.x, p[!j].pos.y, zs + p[j].pos.z), p[!j].pos);
+			float ys = 0;
+			if(yd > 0)
+			{
+				ys = yd * yd * yd * yd * p[!j].pos.y / 10;
+				ys = ys > 0 ? min(p[!j].pos.y, ys) : ys < 0 ? max(p[!j].pos.y, ys) : 0;
+			}
+			yd = 2.0 - VectorDistance(MakeVector(xe + p[j].pos.x, p[!j].pos.y, ze + p[j].pos.z), p[!j].pos);
+			float ye = 0;
+			if(yd > 0)
+			{
+				ye = yd * yd * yd * yd * p[!j].pos.y / 10;
+				ye = ye > 0 ? min(p[!j].pos.y, ye) : ye < 0 ? max(p[!j].pos.y, ye) : 0;
+			}
 			if((xs + p[j].pos.x) * (xs + p[j].pos.x) + (zs + p[j].pos.z) * (zs + p[j].pos.z) > 105.0 ||
 				(xe + p[j].pos.x) * (xe + p[j].pos.x) + (ze + p[j].pos.z) * (ze + p[j].pos.z) > 105.0)
 			{
@@ -213,8 +223,9 @@ void gameDraw()
 			else {
 				glColor4f( 0.5, 0.5, 0.5, 1.0 );
 			}
-			glVertex3f(xs + p[j].pos.x, 0, zs + p[j].pos.z);
-			glVertex3f(xe + p[j].pos.x, 0, ze + p[j].pos.z);
+			glVertex3f(xs + p[j].pos.x, ys, zs + p[j].pos.z);
+			glVertex3f(xe + p[j].pos.x, ye, ze + p[j].pos.z);
+			
 		}
 	}
 	glEnd();

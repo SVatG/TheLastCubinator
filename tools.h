@@ -19,6 +19,8 @@
 #define PI 3.14159265
 #define deg2rad(x) ((PI*(x))/(180.0))
 #define sgn(x) (((x)>0)?(1):(-1))
+#define min(a, b) (((a) > (b))?((b)):((a)))
+#define max(a, b) (((a) > (b))?((a)):((b)))
 
 #define bool uint8_t
 #define true 1
