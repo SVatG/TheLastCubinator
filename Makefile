@@ -1,8 +1,9 @@
 CC = gcc
-CFLAGS = -Wall -O3 -ffast-math -std=c99
+CFLAGS = -Wall -O3 -ffast-math -std=c99 -ggdb
 PROG = ronde
 
-SRCS = main.c game.c itoa.c Vector.c perlin.c
+SRCS = network/main_client.c network/game.c network/game_client.c Vector.c
+OLDSRCS = main.c game.c Vector.c
 
 ifeq ($(shell uname),Darwin)
 	LIBS = -framework OpenGL -framework GLUT
@@ -11,6 +12,9 @@ else
 endif
 
 all: $(PROG)
+
+old: $(OLDSRCS)
+	$(CC) $(CFLAGS) -o $(PROG) $(OLDSRCS) $(LIBS)
 
 $(PROG):	$(SRCS)
 	$(CC) $(CFLAGS) -o $(PROG) $(SRCS) $(LIBS)

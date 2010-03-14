@@ -64,15 +64,9 @@ void initOGL(int argc, char** argv) {
 	glutInitDisplayMode( GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH );
 
 	// Build modestring.
-	char tmpString[255];
 	char modeString[255];
 	modeString[0] = 0;
-	itoa( (int)screenHeight, tmpString, 10 );
-	strcat( modeString, tmpString );
-	strcat( modeString, "x" );
-	itoa( (int)screenWidth, tmpString, 10 );
-	strcat( modeString, tmpString );
-	strcat( modeString, ":24" );
+	sprintf(modeString, "%dx%d:24", (int) screenHeight, (int) screenWidth);
 	glutGameModeString( modeString );
 
 	glutEnterGameMode();
