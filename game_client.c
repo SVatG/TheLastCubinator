@@ -2,10 +2,10 @@
 Game functions only used by the client. Includes all drawing.
 */
 
-#include "../tools.h"
+#include "tools.h"
 #include <stdio.h>
 #include <fcntl.h>
-#include "../Vector.h"
+#include "Vector.h"
 #include "game.h"
 
 #define R 0

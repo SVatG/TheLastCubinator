@@ -2,7 +2,7 @@
 * GLUT main app for things.
 */
 
-#include "../tools.h"
+#include "tools.h"
 #include "game.h"
 #include "game_client.h"
 
