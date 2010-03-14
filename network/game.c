@@ -52,6 +52,7 @@ void gameInit(void) {
 }
 
 // Called every 10 ms
+//calculates the new position of each game relevant object, i.e. player and shots
 int gameUpdate(void)
 {
 	time++;
@@ -154,8 +155,6 @@ int gameUpdate(void)
 				{
 					p[i].shotAct[j] = 0;
 					p[!i].life -= 0.01;
-					
-					//printf("Shot hit %d!\n", !i);
 				}
 				else if(VectorDistance(ZeroVector, p[i].shot[j]) > 10.3)
 				{

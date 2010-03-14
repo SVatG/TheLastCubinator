@@ -16,10 +16,10 @@ Game functions only used by the client. Includes all drawing.
 #define PLAYER 0
 #define SHOT 1
 
-float colors[2][2][4] = {{{0, 0.4, 1, 1}, {0, 0.4, 1, 1}}, {{1, 0, 0.4, 1.0}, {1, 0, 0.4, 1}}};
+float colors[2][2][4] = {{{0, 0.4, 1, 1}, {0, 0.4, 1, 1}}, {{1, 0, 0.4, 1}, {1, 0, 0.4, 1}}};
 
 //from game.c
-extern player_t p[2];//now in game.h
+extern player_t p[2];
 extern int time;
 
 //draws a cube at position (x, y, z); front and top define the rotation of the cube and must be orthogonal to each other
@@ -153,7 +153,7 @@ void gameDraw()
 			float xmod = sin(deg2rad(18 * i)) * (11.0 - rfact);
 			float zmod = cos(deg2rad(18 * i)) * (11.0 - rfact);
 			float ymod = -pow(2, rfact) * 0.1 - 1.0;
-			cubeRotation(xmod, ymod, zmod, 0.1, /**/ MakeVector(xmod, 0, zmod)/* XVector */, YVector);
+			cubeRotation(xmod, ymod, zmod, 0.1, MakeVector(xmod, 0, zmod), YVector);
 			float xd = sin(deg2rad(18 * (i + 1))) * (11.0 - rfact) - xmod;
 			float zd = cos(deg2rad(18 * (i + 1))) * (11.0 - rfact) - zmod;
 			float xdd = sin(deg2rad(18 * i)) * (10.0 - rfact) - xmod;

@@ -11,7 +11,7 @@ int key[256];
 int specialKey[256];
 
 //from game.c
-extern player_t p[2];//now in game.h
+extern player_t p[2];
 
 // Key press handler, normal keys.
 void handleKeypress(unsigned char k, int x, int y)
@@ -199,8 +199,8 @@ void initFunctions() {
 	glutTimerFunc( 10, update, 0 );
 }
 
-int main(int argc, char** argv) {
-	
+int main(int argc, char** argv)
+{
 	initOGL( argc, argv );
 	initFunctions();
 	
