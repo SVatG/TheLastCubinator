@@ -186,7 +186,7 @@ void gameDraw() {
 			float xmod = sin(deg2rad(18 * i)) * (11.0 - rfact);
 			float zmod = cos(deg2rad(18 * i)) * (11.0 - rfact);
 			float ymod = -pow(2, rfact) * 0.1 - 1.0;
-			cubeRotation(xmod, ymod, zmod, 0.1, /**/ MakeVector(xmod, 0, zmod)/* XVector */, YVector);
+			cubeRotation(xmod, ymod, zmod, 0.1, MakeVector(xmod, 0, zmod), YVector);
 			float xd = sin(deg2rad(18 * (i + 1))) * (11.0 - rfact) - xmod;
 			float zd = cos(deg2rad(18 * (i + 1))) * (11.0 - rfact) - zmod;
 			float xdd = sin(deg2rad(18 * i)) * (10.0 - rfact) - xmod;
@@ -213,8 +213,12 @@ void gameDraw() {
 	}
 	
 	// Player positions.
-	Vector movDir = VectorNorm( VectorSub( posA, posB ) );
-	Vector rotDir = VectorNorm( VectorCross( YVector, movDir ) );
+// 	Vector movDir = VectorNorm( VectorSub( posA, posB ) );
+// 	Vector rotDir = VectorNorm( VectorCross( YVector, movDir ) );
+	Vector posAo = posA;
+	posAo.y = 0;
+	Vector posBo = posB;
+	posBo.y = 0;
 	
 	// Player A.
 	//how calculate the normal for the top face of the player cube?
@@ -236,20 +240,27 @@ void gameDraw() {
 	glDisable( GL_LIGHTING );
 	glBegin( GL_LINES );
 	for( int i = 0; i < 720; i++ ) {
+		// General: x/z
 		float xs = sin(deg2rad(0.5 * i)) * dist;
 		float zs = cos(deg2rad(0.5 * i)) * dist;
 		float xe = sin(deg2rad(0.5 * (i + 1))) * dist;
 		float ze = cos(deg2rad(0.5 * (i + 1))) * dist;
-		if( (xs+posA.x)*(xs+posA.x)+(zs+posA.z)*(zs+posA.z) > 105.0 ||
-			(xe+posA.x)*(xe+posA.x)+(ze+posA.z)*(ze+posA.z) > 105.0)
-		{
-			glColor4f( 0.2, 0.2, 0.2, 1.0 );
-		}
-		else {
-			glColor4f( 0.5, 0.5, 0.5, 1.0 );
-		}
-		glVertex3f( xs + posA.x, 0, zs + posA.z );
-		glVertex3f( xe + posA.x, 0, ze + posA.z );
+
+		// Per-player: y, player A
+		float yd = 2.0 - VectorDistance(
+			MakeVector( xs + posB.x, 0, zs + posB.z ), posAo );
+		yd = yd < 0 ? 0 : yd*yd;
+		float ys = ((yd*yd)/10.0)*posA.y;
+		ys = ys > 0.0 && ys > posA.y ? posA.y : ys;
+		ys = ys < 0.0 && ys < posA.y ? posA.y : ys;
+		yd = 2.0 - VectorDistance(
+			MakeVector( xe + posB.x, 0, ze + posB.z ), posAo );
+		yd = yd < 0 ? 0 : yd*yd;
+		float ye = ((yd*yd)/10.0)*posA.y;
+		ye = ye > 0.0 && ye > posA.y ? posA.y : ye;
+		ye = ye < 0.0 && ye < posA.y ? posA.y : ye;
+		
+		// Draw player A circle
 		if( (xs+posB.x)*(xs+posB.x)+(zs+posB.z)*(zs+posB.z) > 105.0 ||
 			(xe+posB.x)*(xe+posB.x)+(ze+posB.z)*(ze+posB.z) > 105.0)
 		{
@@ -258,8 +269,34 @@ void gameDraw() {
 		else {
 			glColor4f( 0.5, 0.5, 0.5, 1.0 );
 		}
-		glVertex3f( xs + posB.x, 0, zs + posB.z );
-		glVertex3f( xe + posB.x, 0, ze + posB.z );
+		glVertex3f( xs + posB.x, ys, zs + posB.z );
+		glVertex3f( xe + posB.x, ye, ze + posB.z );
+
+		// Per-player: y, player B
+		yd = 2.0 - VectorDistance(
+			MakeVector( xs + posA.x, 0, zs + posA.z ), posBo );
+		yd = yd < 0 ? 0 : yd*yd;
+		ys = ((yd*yd)/10.0)*posB.y;
+		ys = ys > 0.0 && ys > posB.y ? posB.y : ys;
+		ys = ys < 0.0 && ys < posB.y ? posB.y : ys;
+		yd = 2.0 - VectorDistance(
+			MakeVector( xe + posA.x, 0, ze + posA.z ), posBo );
+		yd = yd < 0 ? 0 : yd*yd;
+		ye = ((yd*yd)/10.0)*posB.y;
+		ye = ye > 0.0 && ye > posB.y ? posB.y : ye;
+		ye = ye < 0.0 && ye < posB.y ? posB.y : ye;
+		
+		// Draw player B circle
+		if( (xs+posA.x)*(xs+posA.x)+(zs+posA.z)*(zs+posA.z) > 105.0 ||
+			(xe+posA.x)*(xe+posA.x)+(ze+posA.z)*(ze+posA.z) > 105.0)
+		{
+			glColor4f( 0.2, 0.2, 0.2, 1.0 );
+		}
+		else {
+			glColor4f( 0.5, 0.5, 0.5, 1.0 );
+		}
+		glVertex3f( xs + posA.x, ys, zs + posA.z );
+		glVertex3f( xe + posA.x, ye, ze + posA.z );
 	}
 	glEnd();
 	glEnable( GL_LIGHTING );
