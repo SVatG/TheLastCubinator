@@ -44,12 +44,11 @@ float dodgeBacc;
 void cubeRotation(float x, float y, float z, float d, Vector front, Vector top)
 {
 	glBegin( GL_QUADS );
-	
-#ifdef CUBE_ROTATION
+
 	Vector right = VectorNorm(VectorCross(front, top));
 	front = VectorNorm(front);
 	top = VectorNorm(top);
-	
+
 	/*
 	front right top = (x, y, z) + d * front + d * right + d * top
 	= (x, y, z) + d * (front + right + top)
@@ -62,97 +61,50 @@ void cubeRotation(float x, float y, float z, float d, Vector front, Vector top)
 	Vector brb = VectorAdd(MakeVector(x, y, z), VectorMul(VectorAdd3(VectorNeg(front), right, VectorNeg(top)), d));
 	Vector blt = VectorAdd(MakeVector(x, y, z), VectorMul(VectorAdd3(VectorNeg(front), VectorNeg(right), top), d));
 	Vector blb = VectorAdd(MakeVector(x, y, z), VectorMul(VectorAdd3(VectorNeg(front), VectorNeg(right), VectorNeg(top)), d));
-	
+
 	//Top
 	glNormal3f(top.x, top.y, top.z);
 	glVertex3f(frt.x, frt.y, frt.z);
 	glVertex3f(brt.x, brt.y, brt.z);
 	glVertex3f(blt.x, blt.y, blt.z);
 	glVertex3f(flt.x, flt.y, flt.z);
-	
+
 	//Bottom
 	glNormal3f(-top.x, -top.y, -top.z);
 	glVertex3f(frb.x, frb.y, frb.z);
 	glVertex3f(brb.x, brb.y, brb.z);
 	glVertex3f(blb.x, blb.y, blb.z);
 	glVertex3f(flb.x, flb.y, flb.z);
-	
+
 	//Left
 	glNormal3f(-right.x, -right.y, -right.z);
 	glVertex3f(flt.x, flt.y, flt.z);
 	glVertex3f(blt.x, blt.y, blt.z);
 	glVertex3f(blb.x, blb.y, blb.z);
 	glVertex3f(flb.x, flb.y, flb.z);
-	
+
 	//Right
 	glNormal3f(right.x, right.y, right.z);
 	glVertex3f(frt.x, frt.y, frt.z);
 	glVertex3f(brt.x, brt.y, brt.z);
 	glVertex3f(brb.x, brb.y, brb.z);
 	glVertex3f(frb.x, frb.y, frb.z);
-	
+
 	//Front
 	glNormal3f(front.x, front.y, front.z);
 	glVertex3f(frt.x, frt.y, frt.z);
 	glVertex3f(frb.x, frb.y, frb.z);
 	glVertex3f(flb.x, flb.y, flb.z);
 	glVertex3f(flt.x, flt.y, flt.z);
-	
+
 	// Back
 	glNormal3f(-front.x, -front.y, -front.z);
 	glVertex3f(brt.x, brt.y, brt.z);
 	glVertex3f(brb.x, brb.y, brb.z);
 	glVertex3f(blb.x, blb.y, blb.z);
 	glVertex3f(blt.x, blt.y, blt.z);
-#else
-	//Top
-	glNormal3f( 0.0, 1.0f, 0.0f );
-	glVertex3f( -d, d, -d );
-	glVertex3f( -d, d, d );
-	glVertex3f( d, d, d );
-	glVertex3f( d, d, -d );
-	
-	//Bottom
-	glNormal3f( 0.0, -1.0f, 0.0f );
-	glVertex3f( -d, -d, -d );
-	glVertex3f( d, -d, -d );
-	glVertex3f( d, -d, d );
-	glVertex3f( -d, -d, d );
-	
-	//Left
-	glNormal3f( -1.0, 0.0f, 0.0f );
-	glVertex3f( -d, -d, -d );
-	glVertex3f( -d, -d, d );
-	glVertex3f( -d, d, d );
-	glVertex3f( -d, d, -d );
-	
-	//Right
-	glNormal3f( 1.0, 0.0f, 0.0f );
-	glVertex3f( d, -d, -d );
-	glVertex3f( d, d, -d );
-	glVertex3f( d, d, d );
-	glVertex3f( d, -d, d );
-	
-	//Front
-	glNormal3f( 0.0, 0.0f, 1.0f );
-	glVertex3f( -d, -d, d );
-	glVertex3f( d, -d, d );
-	glVertex3f( d, d, d );
-	glVertex3f( -d, d, d );
-	
-	// Back
-	glNormal3f( 0.0, 0.0f, -1.0f );
-	glVertex3f( -d, -d, -d );
-	glVertex3f( -d, d, -d );
-	glVertex3f( d, d, -d );
-	glVertex3f( d, -d, -d );
-#endif
-	glEnd();
-}
 
-void cube(float d)
-{
-	cubeRotation(0, 0, 0, d, XVector, YVector);
+	glEnd();
 }
 
 // Variables
@@ -223,21 +175,8 @@ void gameDraw() {
 	gluLookAt( cam.x, 4.0, cam.z, mid.x, mid.y, mid.z, 0, 1, 0 );
 
 	// Some background
-#ifndef CUBE_ROTATION
-	glPushMatrix();
-#endif
+	glDisable( GL_LIGHT0 );
 	glColor4f( 1.0, 0.4, 0.0, 1.0 );
-// 	for( int x = 0; x < 21; x++ ) {
-// 		for( int z = 0; z < 21; z++ ) {
-// 			float d = (x-10.0)*(x-10.0)+(z-10.0)*(z-10.0);
-// 			if( d < 110.0 ) {
-// 				float y = sqrt(d)*0.5-5.5;
-// 				glTranslatef( x - 10.0, y, z - 10.0 );
-// 				cube( 0.1 );
-// 				glTranslatef( -x + 10.0, -y, -z + 10.0 );
-// 			}
-// 		}
-// 	}
 	for( int c = -50; c < 11; c++ ) {
 		for( int d = 0; d < 20; d++ ) {
 			float i = (d-(time/100.0));
@@ -246,7 +185,6 @@ void gameDraw() {
 			float rfact = c + (rtime/50.0);
 			float xmod = sin(deg2rad(18 * i)) * (11.0 - rfact);
 			float zmod = cos(deg2rad(18 * i)) * (11.0 - rfact);
-#ifdef CUBE_ROTATION
 			float ymod = -pow(2, rfact) * 0.1 - 1.0;
 			cubeRotation(xmod, ymod, zmod, 0.1, /**/ MakeVector(xmod, 0, zmod)/* XVector */, YVector);
 			float xd = sin(deg2rad(18 * (i + 1))) * (11.0 - rfact) - xmod;
@@ -260,54 +198,25 @@ void gameDraw() {
 				glVertex3f(xmod + xdd, ymod - pow(2, rfact) * 0.1, zmod + zdd);
 				glVertex3f(xmod, ymod, zmod);
 			glEnd();
-#else
-			glTranslatef(xmod, -pow(2, rfact) * 0.1 - 1.0, zmod);
-			cube(0.1);
-			float xd = sin(deg2rad(18 * (i + 1))) * (11.0 - rfact) - xmod;
-			float zd = cos(deg2rad(18 * (i + 1))) * (11.0 - rfact) - zmod;
-			float xdd = sin(deg2rad(18 * i)) * (10.0 - rfact) - xmod;
-			float zdd = cos(deg2rad(18 * i)) * (10.0 - rfact) - zmod;
-			glColor4f(1.0, 0.4, 1.0, 1.0);
-			glBegin( GL_LINES );
-				glVertex3f(xd, 0, zd);
-				glVertex3f(0, 0, 0);
-				glVertex3f(xdd, -pow(2, rfact) * 0.1, zdd);
-				glVertex3f(0, 0, 0);
-			glEnd();
-			glTranslatef(-xmod, pow(2, rfact) * 0.1 + 1.0, -zmod);
-#endif
 		}
+		
 	}
-#ifndef CUBE_ROTATION
-	glPopMatrix();
-#endif
+	glEnable( GL_LIGHT0 );
+
 	
 	// Border!
-#ifndef CUBE_ROTATION
-	glPushMatrix();
-#endif
 	glColor4f( 0.4, 1.0, 0.0, 1.0 );
 	for( int i = 0; i < 180; i++ ) {
 		float xmod = sin( 2*(i+time/10.0)*(PI/180.0) ) * 10.3;
 		float zmod = cos( 2*(i+time/10.0)*(PI/180.0) ) * 10.3;
-#ifdef CUBE_ROTATION
 		cubeRotation(xmod, 0, zmod, 0.05, MakeVector(xmod, 0, zmod), YVector);
-#else
-		glTranslatef( xmod, 0.0, zmod );
-		cube( 0.05 );
-		glTranslatef( -xmod, 0.0, -zmod );
-#endif
 	}
-#ifndef CUBE_ROTATION
-	glPopMatrix();
-#endif
 	
 	// Player positions.
 	Vector movDir = VectorNorm( VectorSub( posA, posB ) );
 	Vector rotDir = VectorNorm( VectorCross( YVector, movDir ) );
 	
 	// Player A.
-#ifdef CUBE_ROTATION
 	//how calculate the normal for the top face of the player cube?
 	// - calculate the cross of front and the y axis (make a vector in the xz plane)
 	// - calculate the cross of front and the xz plane vector
@@ -316,38 +225,12 @@ void gameDraw() {
 	Vector cubeSide = VectorCross(cubeFront, YVector);
 	glColor4f(0.0, 0.4, 1.0, 1.0);
 	cubeRotation(posA.x, posA.y, posA.z, lifeA, cubeFront, VectorCross(cubeFront, cubeSide));
-#else
-	glPushMatrix();
-	glTranslatef( posA.x, posA.y, posA.z );
-	Vector b2 = VectorNorm( VectorSub( posA, posB ) );
-	Vector b3 = VectorNorm( ProjectVectorToPlane( rotDir, b2 ) );
-	Vector b1 = VectorNorm( VectorCross( b2, b3 ) );
-	Matrix rot = MakeMatrixFromVectors( b1, b2, b3, ZeroVector );
-	MatrixGLMult( rot );
-	glColor4f( 0.0, 0.4, 1.0, 1.0 );
-	cube( lifeA );
-	glPopMatrix();
-#endif
 
 	// Player B.
-#ifdef CUBE_ROTATION
-	//same as above...
 	cubeFront = VectorSub(posA, posB);
 	cubeSide = VectorCross(cubeFront, YVector);
 	glColor4f(1.0, 0.0, 0.4, 1.0);
 	cubeRotation(posB.x, posB.y, posB.z, lifeB, cubeFront, VectorCross(cubeFront, cubeSide));
-#else
-	glPushMatrix();
-	glTranslatef( posB.x, posB.y, posB.z );
-	b2 = VectorNorm( VectorSub( posB, posA ) );
-	b3 = VectorNorm( ProjectVectorToPlane( rotDir, b2 ) );
-	b1 = VectorNorm( VectorCross( b2, b3 ) );
-	rot = MakeMatrixFromVectors( b1, b2, b3, ZeroVector );
-	MatrixGLMult( rot );
-	glColor4f( 1.0, 0.0, 0.4, 1.0 );
-	cube( lifeB );
-	glPopMatrix();
-#endif
 	
 	// Circles.
 	glDisable( GL_LIGHTING );
@@ -386,30 +269,19 @@ void gameDraw() {
 	glColor4f( 0.0, 0.4, 1.0, 1.0 );
 	for( int i = 0; i < 200; i++ ) {
 		if( shotAa[i] ) {
-#ifdef CUBE_ROTATION
 			cubeRotation(shotA[i].x, shotA[i].y, shotA[i].z, 0.1, shotAd[i], YVector);
-#else
-			glTranslatef( shotA[i].x, shotA[i].y, shotA[i].z );
-			cube(0.1);
-			glTranslatef( -shotA[i].x, -shotA[i].y, -shotA[i].z );
-#endif
 		}
 	}
 	glColor4f( 1.0, 0.0, 0.4, 1.0 );
 	for( int i = 0; i < 200; i++ ) {	
 		if( shotBa[i] ) {
-#ifdef CUBE_ROTATION
 			cubeRotation(shotB[i].x, shotB[i].y, shotB[i].z, 0.1, shotBd[i], YVector);
-#else
-			glTranslatef( shotB[i].x, shotB[i].y, shotB[i].z );
-			cube(0.1);
-			glTranslatef( -shotB[i].x, -shotB[i].y, -shotB[i].z );
-#endif
 		}
 	}
 
 #ifdef GAME_DEBUG
-	printf("Player A: %f, %f, %f --- Player B: %f, %f, %f\n", posA.x, posA.y, posA.z, posB.x, posB.y, posB.z);
+	printf("Player A: %f, %f, %f --- Player B: %f, %f, %f\n", posA.x, posA.y,
+			posA.z, posB.x, posB.y, posB.z);
 #endif
 }
 
