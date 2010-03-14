@@ -37,6 +37,6 @@ void gameInit(void);
 int gameUpdate(void);
 void gameCleanup(void);
 
-player_t p[2];
+//player_t p[2];
 
 #endif

@@ -19,7 +19,7 @@ Game functions only used by the client. Includes all drawing.
 float colors[2][2][4] = {{{0, 0.4, 1, 1}, {0, 0.4, 1, 1}}, {{1, 0, 0.4, 1.0}, {1, 0, 0.4, 1}}};
 
 //from game.c
-//extern player_t p[2];//now in game.h
+extern player_t p[2];//now in game.h
 extern int time;
 
 //draws a cube at position (x, y, z); front and top define the rotation of the cube and must be orthogonal to each other

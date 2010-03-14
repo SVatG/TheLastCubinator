@@ -12,7 +12,7 @@
 //#define GAME_DEBUG
 
 int time = 0;
-//player_t p[2];//now in game.h
+player_t p[2];//now in game.h
 
 typedef struct updateData
 {

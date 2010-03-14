@@ -11,7 +11,7 @@ int key[256];
 int specialKey[256];
 
 //from game.c
-//extern player_t p[2];//now in game.h
+extern player_t p[2];//now in game.h
 
 // Key press handler, normal keys.
 void handleKeypress(unsigned char k, int x, int y)
@@ -159,9 +159,9 @@ void drawScene() {
 // Called every 10 milliseconds to update things on screen
 void update(int value) {
 	if( gameUpdate() ) {
-		graphicCleanup();
 		gameCleanup();
-		exit( 1 );
+		graphicCleanup();
+		exit(1);
 	}
 	glutPostRedisplay();
 	glutTimerFunc( 10, update, 0 );
@@ -204,8 +204,8 @@ int main(int argc, char** argv) {
 	initOGL( argc, argv );
 	initFunctions();
 	
-	gameInit();
 	graphicInit();
+	gameInit();
 	
 	glutMainLoop();
 	
