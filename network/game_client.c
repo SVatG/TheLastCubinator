@@ -121,6 +121,9 @@ void graphicInit(void) {
 	glMatrixMode( GL_PROJECTION );
 	glLoadIdentity();
 	gluPerspective( 90.0, screenWidth / screenHeight, 1.0, 200.0 );
+	
+	// LINES.
+	glLineWidth( 2.0 );
 }
 
 // Called by GLUT to draw things.

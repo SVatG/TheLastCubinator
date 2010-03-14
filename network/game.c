@@ -12,7 +12,7 @@
 //#define GAME_DEBUG
 
 int time = 0;
-player_t p[2];//now in game.h
+player_t p[2];
 
 typedef struct updateData
 {
@@ -22,11 +22,32 @@ typedef struct updateData
 } updateData_t;
 
 void gameInit(void) {
-	p[0].shotInd = 0;
-	p[1].shotInd = 0;
-	for( int i = 0; i < 200; i++ ) {
-		p[0].shotAct[i] = 0;
-		p[1].shotAct[i] = 0;
+	
+	p[0].pos = MakeVector(  1.0, 0.0, 0.0 );
+	p[1].pos = MakeVector( -1.0, 0.0, 0.0 );
+	
+	for(int i = 0; i < 2; i++)
+	{
+		p[i].life = 0.3;
+		
+		p[i].input.forwards = 0;
+		p[i].input.backwards = 0;
+		p[i].input.left = 0;
+		p[i].input.right = 0;
+		
+		p[i].input.shoot = 0;
+		p[i].input.dodgeUp = 0;
+		p[i].input.dodgeDown = 0;
+		
+		p[i].dodgeTime = 0;
+		p[i].dodgeAcc = 0;
+		p[i].shotTime = 0;
+		
+		p[i].shotInd = 0;
+		for(int j = 0; j < 200; j++)
+		{
+			p[i].shotAct[j] = 0;
+		}
 	}
 }
 
@@ -107,10 +128,10 @@ int gameUpdate(void)
 			p[i].pos = VectorSub(p[i].pos, VectorMul(VectorNorm(VectorSub(p[i].pos, ZeroVector)), sd));
 		}
 	}
-	if(VectorDistance(p[0].pos, p[1].pos) < 1.0 )
+	if(VectorDistance(p[0].pos, p[1].pos) < 1)
 	{
 		float abd = (VectorDistance(p[0].pos, p[1].pos) - 1) / 2;
-		for(int i = 0; i < 2; i++) {p[i].pos = VectorSub(p[i].pos, VectorMul(data[i].movDir, abd));}
+		for(int i = 0; i < 2; i++) {p[i].pos = VectorAdd(p[i].pos, VectorMul(data[i].movDir, abd));}
 	}
 	for(int i = 0; i < 2; i++)
 	{
