@@ -8,9 +8,6 @@
 #include <stdint.h>
 #include <string.h>
 
-#include "itoa.h"
-#include "perlin.h"
-
 #ifdef __APPLE__
 #include <OpenGL/OpenGL.h>
 #include <GLUT/glut.h>
@@ -35,7 +32,7 @@ extern int key[256];
 extern int specialKey[256];
 
 // Global defines. Could also be extern vars eventually.
-#define screenHeight 1366.0
+#define screenHeight 1280.0
 #define screenWidth 768.0
 
 #endif
