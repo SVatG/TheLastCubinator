@@ -78,7 +78,7 @@ void initOGL(int argc, char** argv) {
 	glutEnterGameMode();
 
 	// Alternative: Windowed.
-	// glutCreateWindow("Fages");
+	//glutCreateWindow("Fages");
 
 	glewInit();
 }
