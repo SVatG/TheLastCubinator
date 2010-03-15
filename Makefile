@@ -2,7 +2,7 @@ CC = gcc
 CFLAGS = -Wall -O3 -ffast-math -std=c99
 PROG = ronde
 
-SRCS = main.c game.c itoa.c Vector.c perlin.c
+SRCS = main_client.c game.c game_client.c Vector.c
 
 ifeq ($(shell uname),Darwin)
 	LIBS = -framework OpenGL -framework GLUT
@@ -12,7 +12,7 @@ endif
 
 all: $(PROG)
 
-$(PROG):	$(SRCS)
+$(PROG): $(SRCS)
 	$(CC) $(CFLAGS) -o $(PROG) $(SRCS) $(LIBS)
 
 test: all
