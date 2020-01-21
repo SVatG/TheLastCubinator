@@ -177,11 +177,10 @@ void initOGL(int argc, char** argv) {
 	modeString[0] = 0;
 	sprintf(modeString, "%dx%d:24", (int) screenHeight, (int) screenWidth);
 	glutGameModeString( modeString );
-	
 	glutEnterGameMode();
 	
 	// Alternative: Windowed.
-	// glutCreateWindow("Fages");
+	//glutCreateWindow("Fages");
 	
 	glewInit();
 }

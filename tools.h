@@ -35,6 +35,6 @@ extern int specialKey[256];
 
 // Global defines. Could also be extern vars eventually.
 #define screenHeight 1280.0
-#define screenWidth 768.0
+#define screenWidth 720.0
 
 #endif
